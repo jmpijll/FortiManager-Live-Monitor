@@ -25,18 +25,43 @@ A modern web application for live monitoring and visualization of FortiManager c
 4. **FortiManager Monitoring:**
    - Useful system and health metrics
 
-## Setup
-1. Clone the repository
-2. Create a `.env` file with your FortiManager API credentials (see `.env.example`)
-3. Install dependencies: `npm install`
-4. Start the app: `npm run dev`
-
 ## Tech Stack
-- React (with Vite or Next.js)
-- TypeScript
-- Tailwind CSS or Material UI
-- Chart.js or similar for visualizations
-- Axios for API calls
+- **Frontend Framework:** React 18 with Vite
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS with custom theme
+- **State Management:** React Query for server state
+- **Data Visualization:** Chart.js with react-chartjs-2
+- **UI Components:** Headless UI and Heroicons
+- **HTTP Client:** Axios
+- **Date Handling:** date-fns
+
+## Development Setup
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/jmpijll/FortiManager-Live-Monitor.git
+   cd FortiManager-Live-Monitor
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Create a `.env` file with your FortiManager API credentials (see `.env.example`)
+
+4. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+## Environment Variables
+Create a `.env` file in the root directory with the following variables:
+```
+VITE_FORTIMANAGER_HOST=https://your-fortimanager.example.com
+VITE_FORTIMANAGER_USERNAME=your-username
+VITE_FORTIMANAGER_PASSWORD=your-password
+VITE_POLL_INTERVAL_SECONDS=30
+```
 
 ## Contributing
-Pull requests and suggestions welcome! 
+Pull requests and suggestions welcome!
