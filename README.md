@@ -64,3 +64,9 @@ VITE_FMG_API_URL=https://your-fortimanager.example.com
 VITE_FMG_API_TOKEN=your-api-token
 VITE_POLL_INTERVAL_SECONDS=30
 ```
+
+## Security Notice: API Token Storage
+
+- The API token you provide is stored in your browser's localStorage for convenience and persistence between sessions.
+- **Do not use personal or highly privileged tokens in shared or untrusted environments.**
+- To clear your API token and config, open the API Config modal in the app and use the Reset button, or clear your browser's localStorage for this site.
