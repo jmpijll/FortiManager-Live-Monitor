@@ -70,3 +70,13 @@ VITE_POLL_INTERVAL_SECONDS=30
 - The API token you provide is stored in your browser's localStorage for convenience and persistence between sessions.
 - **Do not use personal or highly privileged tokens in shared or untrusted environments.**
 - To clear your API token and config, open the API Config modal in the app and use the Reset button, or clear your browser's localStorage for this site.
+
+## Development Notes: TypeScript & Table Compatibility
+
+- **react-table & React 19:**
+  - As of May 2025, `react-table` v7 does not provide up-to-date TypeScript types compatible with React 19.
+  - To enable advanced table features (filtering, search) with live updates, the following workarounds are used:
+    - Explicit `any` types for table rows/cells in `DeviceTable.tsx`.
+    - A local module declaration (`src/types/react-table.d.ts`) to suppress missing type errors.
+    - The `@typescript-eslint/no-explicit-any` linter rule is disabled for this file only, as recommended by [ESLint documentation](https://eslint.org/docs/latest/use/configure/rules) and [community best practices](https://medium.com/@karimdhrif4444/mastering-eslint-how-to-disable-rules-for-specific-files-06b976af6ee1).
+  - These workarounds are isolated and documented in the code. Remove them once official type support is available.
