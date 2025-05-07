@@ -51,7 +51,8 @@
 
 @layer base {
   * {
-    @apply border-border;
+    /* Removed invalid @apply border-border; */
+    /* If a border is needed on all elements, use a valid Tailwind class or custom CSS here. */
   }
   body {
     @apply bg-background text-foreground;

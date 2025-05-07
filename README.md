@@ -153,6 +153,8 @@ Welcome to **FortiManager Live Monitor** – your modern, user-friendly dashboar
 - **Dashboard not loading?**
   - Ensure you're logged in and session is valid
   - Try logging out and back in
+- **Tailwind build error (e.g. unknown utility class):**
+  - The app uses only standard Tailwind CSS classes. If you see errors like `Cannot apply unknown utility class: border-border`, make sure you are not using custom utility classes that are not defined in your Tailwind config. This has been fixed in the latest version.
 - **Still stuck?**
   - Click the 💬 button or open a GitHub issue
 
