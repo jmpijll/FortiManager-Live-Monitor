@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Sidebar from './Sidebar';
 import DeviceTabs from './DeviceTabs';
+import DeviceTable from './DeviceTable';
 
 export default function Dashboard() {
   const [selectedAdom, setSelectedAdom] = useState<string | null>(null);
@@ -12,12 +13,7 @@ export default function Dashboard() {
       <main className="flex-1 p-6 overflow-auto">
         <DeviceTabs selectedType={selectedType} onSelectType={setSelectedType} />
         {selectedAdom ? (
-          <div>
-            {/* DeviceTable will go here */}
-            <div className="mt-4">
-              Device table for {selectedType} in ADOM {selectedAdom}
-            </div>
-          </div>
+          <DeviceTable adom={selectedAdom} deviceType={selectedType} />
         ) : (
           <div className="text-gray-500">Select an ADOM to view devices.</div>
         )}
