@@ -1,14 +1,3 @@
-import axios from 'axios';
-import { FMG_API_URL, FMG_API_TOKEN } from '../env';
-
-const api = axios.create({
-  baseURL: FMG_API_URL,
-  headers: {
-    'Content-Type': 'application/json',
-    ...(FMG_API_TOKEN ? { Authorization: `Bearer ${FMG_API_TOKEN}` } : {}),
-  },
-});
-
 // Types
 export interface ADOM {
   name: string;
@@ -56,75 +45,38 @@ export interface AP {
   status?: string;
 }
 
-// API functions
-export async function getADOMs(): Promise<ADOM[]> {
-  const res = await api.post('/jsonrpc', {
-    id: 1,
-    method: 'get',
-    params: [{ url: '/dvmdb/adom' }],
+// Helper for POST requests
+async function fmgPost(apiUrl: string, sessionId: string, params: Record<string, unknown>) {
+  const res = await fetch(`${apiUrl}/jsonrpc`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id: 1, session: sessionId, ...params }),
   });
-  return res.data.result?.[0]?.data || [];
+  const data = await res.json();
+  return data.result?.[0]?.data || [];
 }
 
-export async function getDevices(adom: string): Promise<Device[]> {
-  const res = await api.post('/jsonrpc', {
-    id: 1,
-    method: 'get',
-    params: [{ url: `/dvmdb/adom/${adom}/device` }],
-  });
-  return res.data.result?.[0]?.data || [];
+export async function getADOMs(apiUrl: string, sessionId: string) {
+  return fmgPost(apiUrl, sessionId, { method: 'get', params: [{ url: '/dvmdb/adom' }] });
 }
-
-export async function getDeviceMonitor(deviceName: string): Promise<DeviceMonitor> {
-  const res = await api.post('/jsonrpc', {
-    id: 1,
-    method: 'get',
-    params: [{ url: `/pm/device/${deviceName}/monitor` }],
-  });
-  return res.data.result?.[0]?.data || {};
+export async function getDevices(apiUrl: string, sessionId: string, adom: string) {
+  return fmgPost(apiUrl, sessionId, { method: 'get', params: [{ url: `/dvmdb/adom/${adom}/device` }] });
 }
-
-export async function getSystemStatus(): Promise<SystemStatus> {
-  const res = await api.post('/jsonrpc', {
-    id: 1,
-    method: 'get',
-    params: [{ url: '/sys/status' }],
-  });
-  return res.data.result?.[0]?.data || {};
+export async function getDeviceMonitor(apiUrl: string, sessionId: string, deviceName: string) {
+  return fmgPost(apiUrl, sessionId, { method: 'get', params: [{ url: `/pm/device/${deviceName}/monitor` }] });
 }
-
-export async function getFortiSwitches(adom: string): Promise<Switch[]> {
-  const res = await api.post('/jsonrpc', {
-    id: 1,
-    method: 'get',
-    params: [{ url: `/dvmdb/adom/${adom}/switch` }],
-  });
-  return res.data.result?.[0]?.data || [];
+export async function getSystemStatus(apiUrl: string, sessionId: string) {
+  return fmgPost(apiUrl, sessionId, { method: 'get', params: [{ url: '/sys/status' }] });
 }
-
-export async function getFortiAPs(adom: string): Promise<AP[]> {
-  const res = await api.post('/jsonrpc', {
-    id: 1,
-    method: 'get',
-    params: [{ url: `/dvmdb/adom/${adom}/ap` }],
-  });
-  return res.data.result?.[0]?.data || [];
+export async function getFortiSwitches(apiUrl: string, sessionId: string, adom: string) {
+  return fmgPost(apiUrl, sessionId, { method: 'get', params: [{ url: `/dvmdb/adom/${adom}/switch` }] });
 }
-
-export async function getSwitchMonitor(deviceName: string): Promise<DeviceMonitor> {
-  const res = await api.post('/jsonrpc', {
-    id: 1,
-    method: 'get',
-    params: [{ url: `/pm/switch/${deviceName}/monitor` }],
-  });
-  return res.data.result?.[0]?.data || {};
+export async function getFortiAPs(apiUrl: string, sessionId: string, adom: string) {
+  return fmgPost(apiUrl, sessionId, { method: 'get', params: [{ url: `/dvmdb/adom/${adom}/ap` }] });
 }
-
-export async function getAPMonitor(deviceName: string): Promise<DeviceMonitor> {
-  const res = await api.post('/jsonrpc', {
-    id: 1,
-    method: 'get',
-    params: [{ url: `/pm/ap/${deviceName}/monitor` }],
-  });
-  return res.data.result?.[0]?.data || {};
+export async function getSwitchMonitor(apiUrl: string, sessionId: string, deviceName: string) {
+  return fmgPost(apiUrl, sessionId, { method: 'get', params: [{ url: `/pm/switch/${deviceName}/monitor` }] });
+}
+export async function getAPMonitor(apiUrl: string, sessionId: string, deviceName: string) {
+  return fmgPost(apiUrl, sessionId, { method: 'get', params: [{ url: `/pm/ap/${deviceName}/monitor` }] });
 }

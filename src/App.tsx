@@ -8,8 +8,8 @@ import FeedbackButton from './components/FeedbackButton';
 
 function App() {
   const [showConfig, setShowConfig] = useState(false);
-  const { apiUrl, apiToken } = useConfig();
-  const configIncomplete = !apiUrl || !apiToken;
+  const { apiUrl, sessionId } = useConfig();
+  const configIncomplete = !apiUrl || !sessionId;
   const [theme, setTheme] = useState(() => {
     if (typeof window !== 'undefined') {
       return localStorage.getItem('theme') || 'dark';
@@ -70,9 +70,9 @@ function App() {
           </select>
         </div>
       </header>
-      <ConfigModal open={showConfig} onClose={() => setShowConfig(false)} />
+      <ConfigModal open={configIncomplete || showConfig} onClose={() => setShowConfig(false)} />
       <main className="flex-1">
-        <Dashboard />
+        {!configIncomplete && <Dashboard />}
       </main>
       <FeedbackButton />
     </div>

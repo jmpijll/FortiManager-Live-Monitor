@@ -3,18 +3,23 @@ import type { ReactNode } from 'react';
 
 interface Config {
   apiUrl: string;
-  apiToken: string;
+  username: string;
+  sessionId: string;
   pollInterval: number;
 }
 
 interface ConfigContextType extends Config {
-  setConfig: (config: Config) => void;
+  password: string;
+  setConfig: (c: Partial<ConfigContextType>) => void;
+  login: (url: string, username: string, password: string) => Promise<boolean>;
+  logout: () => void;
 }
 
 const defaultConfig: Config = {
-  apiUrl: process.env.VITE_FMG_API_URL || '',
-  apiToken: process.env.VITE_FMG_API_TOKEN || '',
-  pollInterval: Number(process.env.VITE_POLL_INTERVAL_SECONDS) || 30,
+  apiUrl: '',
+  username: '',
+  sessionId: '',
+  pollInterval: 30,
 };
 
 const ConfigContext = createContext<ConfigContextType | undefined>(undefined);
@@ -24,17 +29,52 @@ export const ConfigProvider = ({ children }: { children: ReactNode }) => {
     const stored = localStorage.getItem('fmg_config');
     return stored ? JSON.parse(stored) : defaultConfig;
   });
+  const [password, setPassword] = useState('');
 
   useEffect(() => {
-    localStorage.setItem('fmg_config', JSON.stringify(config));
+    // Never persist password
+    localStorage.setItem('fmg_config', JSON.stringify({ ...config }));
   }, [config]);
 
-  const setConfig = (newConfig: Config) => {
-    setConfigState(newConfig);
+  const setConfig = (newConfig: Partial<ConfigContextType>) => {
+    setConfigState((prev) => ({ ...prev, ...newConfig }));
+    if (newConfig.password !== undefined) setPassword(newConfig.password);
+  };
+
+  const login = async (url: string, username: string, password: string) => {
+    try {
+      const res = await fetch(`${url}/jsonrpc`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: 1,
+          method: 'exec',
+          params: [{ url: '/sys/login/user', data: { user: username, passwd: password } }],
+        }),
+      });
+      const data = await res.json();
+      const sessionId = data.result?.[0]?.data?.session || '';
+      if (sessionId) {
+        setConfigState((prev) => ({ ...prev, apiUrl: url, username, sessionId }));
+        setPassword(password);
+        return true;
+      }
+      return false;
+    } catch {
+      return false;
+    }
+  };
+
+  const logout = () => {
+    setConfigState(defaultConfig);
+    setPassword('');
+    localStorage.removeItem('fmg_config');
   };
 
   return (
-    <ConfigContext.Provider value={{ ...config, setConfig }}>{children}</ConfigContext.Provider>
+    <ConfigContext.Provider value={{ ...config, password, setConfig, login, logout }}>
+      {children}
+    </ConfigContext.Provider>
   );
 };
 

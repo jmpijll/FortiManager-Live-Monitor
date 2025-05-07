@@ -11,12 +11,13 @@ function isValidUrl(url: string) {
 }
 
 export default function ConfigModal({ open, onClose }: { open: boolean; onClose: () => void }) {
-  const { apiUrl, apiToken, pollInterval, setConfig } = useConfig();
+  const { apiUrl, username, login } = useConfig();
   const [url, setUrl] = useState(apiUrl);
-  const [token, setToken] = useState(apiToken);
-  const [interval, setInterval] = useState(pollInterval);
-  const [showToken, setShowToken] = useState(false);
+  const [user, setUser] = useState(username);
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const initialFocusRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -25,29 +26,30 @@ export default function ConfigModal({ open, onClose }: { open: boolean; onClose:
     }
   }, [open]);
 
-  const handleSave = () => {
+  const handleLogin = async () => {
+    setError('');
     if (!isValidUrl(url)) {
       setError('Please enter a valid API URL.');
       return;
     }
-    if (!token) {
-      setError('API token is required.');
+    if (!user) {
+      setError('Username is required.');
       return;
     }
-    if (interval < 5) {
-      setError('Polling interval must be at least 5 seconds.');
+    if (!password) {
+      setError('Password is required.');
       return;
     }
-    setConfig({ apiUrl: url, apiToken: token, pollInterval: interval });
-    setError('');
-    onClose();
-  };
-
-  const handleReset = () => {
-    setUrl(apiUrl);
-    setToken(apiToken);
-    setInterval(pollInterval);
-    setError('');
+    setLoading(true);
+    const ok = await login(url, user, password);
+    setLoading(false);
+    if (ok) {
+      setPassword('');
+      setError('');
+      onClose();
+    } else {
+      setError('Login failed. Please check your credentials.');
+    }
   };
 
   if (!open) return null;
@@ -60,11 +62,7 @@ export default function ConfigModal({ open, onClose }: { open: boolean; onClose:
         aria-modal="true"
         aria-labelledby="config-modal-title"
       >
-        <h2 id="config-modal-title" className="text-xl font-bold mb-4">FortiManager API Configuration</h2>
-        <div className="mb-2 text-sm text-yellow-600 dark:text-yellow-400">
-          <strong>Warning:</strong> The API token is stored in your browser's localStorage for
-          convenience. Do not use personal or highly privileged tokens in shared environments.
-        </div>
+        <h2 id="config-modal-title" className="text-xl font-bold mb-4">FortiManager Login</h2>
         <div className="mb-4">
           <label className="block mb-1 font-medium" htmlFor="api-url-input">API URL</label>
           <input
@@ -78,63 +76,49 @@ export default function ConfigModal({ open, onClose }: { open: boolean; onClose:
           />
         </div>
         <div className="mb-4">
-          <label className="block mb-1 font-medium" htmlFor="api-token-input">API Token</label>
+          <label className="block mb-1 font-medium" htmlFor="username-input">Username</label>
+          <input
+            id="username-input"
+            className="w-full border rounded px-2 py-1 focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2"
+            value={user}
+            onChange={(e) => setUser(e.target.value)}
+            placeholder="API Username"
+            type="text"
+            autoComplete="username"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block mb-1 font-medium" htmlFor="password-input">Password</label>
           <div className="flex items-center gap-2">
             <input
-              id="api-token-input"
+              id="password-input"
               className="w-full border rounded px-2 py-1 focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2"
-              value={token}
-              onChange={(e) => setToken(e.target.value)}
-              placeholder="API Token"
-              type={showToken ? 'text' : 'password'}
-              autoComplete="off"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
+              type={showPassword ? 'text' : 'password'}
+              autoComplete="current-password"
             />
             <button
               type="button"
               className="text-xs px-2 py-1 border rounded focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2"
-              onClick={() => setShowToken((v) => !v)}
-              aria-label={showToken ? 'Hide API token' : 'Show API token'}
+              onClick={() => setShowPassword((v) => !v)}
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
             >
-              {showToken ? 'Hide' : 'Show'}
+              {showPassword ? 'Hide' : 'Show'}
             </button>
           </div>
-        </div>
-        <div className="mb-4">
-          <label className="block mb-1 font-medium" htmlFor="poll-interval-input">Polling Interval (seconds)</label>
-          <input
-            id="poll-interval-input"
-            className="w-full border rounded px-2 py-1 focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2"
-            type="number"
-            min={5}
-            value={interval}
-            onChange={(e) => setInterval(Number(e.target.value))}
-          />
         </div>
         {error && <div className="mb-2 text-red-600 dark:text-red-400 text-sm">{error}</div>}
-        <div className="flex justify-between items-center gap-2 mt-2">
+        <div className="flex justify-end gap-2 mt-2">
           <button
-            className="px-3 py-2 rounded bg-gray-200 dark:bg-gray-700 focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2"
-            onClick={handleReset}
+            className="px-4 py-2 rounded bg-blue-600 text-white focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2"
+            onClick={handleLogin}
             type="button"
+            disabled={loading}
           >
-            Reset
+            {loading ? 'Logging in...' : 'Login'}
           </button>
-          <div className="flex gap-2">
-            <button
-              className="px-4 py-2 rounded bg-gray-200 dark:bg-gray-700 focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2"
-              onClick={onClose}
-              type="button"
-            >
-              Cancel
-            </button>
-            <button
-              className="px-4 py-2 rounded bg-blue-600 text-white focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2"
-              onClick={handleSave}
-              type="button"
-            >
-              Save
-            </button>
-          </div>
         </div>
       </div>
     </div>
