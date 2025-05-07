@@ -50,6 +50,17 @@ A modern web application for live monitoring and visualization of FortiManager c
 ## Development Setup
 
 1. Clone the repository:
+
    ```
 
    ```
+
+## Environment Variables
+
+Create a `.env` file in the root directory with the following variables:
+
+```
+VITE_FMG_API_URL=https://your-fortimanager.example.com
+VITE_FMG_API_TOKEN=your-api-token
+VITE_POLL_INTERVAL_SECONDS=30
+```
