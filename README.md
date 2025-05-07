@@ -222,4 +222,18 @@ This app is a static site and can be deployed to any static hosting provider. He
   - For privacy-respecting analytics, consider [Plausible](https://plausible.io/) or [Fathom](https://usefathom.com/).
   - No analytics are enabled by default; add your preferred provider as needed.
 
+## Feature Roadmap
+
+- **Role-based Access:** Planned for future release. Will allow different user roles and permissions.
+- **Advanced Reporting:** Planned for future release. Will include exportable reports and custom dashboards.
+- **Mobile Support:** Planned for future release. Responsive design is in place, but dedicated mobile features are on the roadmap.
+
+## Ongoing Maintenance & Documentation Review
+
+- **Dependency Updates:**
+  - Use tools like [Dependabot](https://github.com/dependabot) or [Renovate](https://github.com/renovatebot/renovate) to keep dependencies up to date.
+- **Documentation Review:**
+  - Review and update documentation at least once per quarter or after major changes.
+  - Use the checklists in this README and CONTRIBUTING.md to ensure best practices are followed.
+
 ---
