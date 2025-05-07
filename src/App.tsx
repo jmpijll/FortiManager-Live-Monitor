@@ -35,47 +35,49 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white">
-      <header className="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-700">
-        <div className="flex items-center gap-3">
-          <h1 className="text-2xl font-bold">{t('FortiManager Live Monitor')}</h1>
-          {configIncomplete && (
-            <span className="px-2 py-1 text-xs rounded bg-yellow-200 text-yellow-800 dark:bg-yellow-700 dark:text-yellow-100 animate-pulse">
-              {t('API config required')}
-            </span>
-          )}
-        </div>
-        <div className="flex gap-2 items-center">
-          <button
-            className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
-            onClick={() => setShowConfig(true)}
-          >
-            {t('API Config')}
-          </button>
-          <button
-            className="ml-2 px-3 py-2 rounded bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2"
-            aria-label="Toggle dark/light mode"
-            onClick={toggleTheme}
-          >
-            {theme === 'dark' ? '🌙 Dark' : '☀️ Light'}
-          </button>
-          <select
-            className="ml-2 px-2 py-1 rounded bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2"
-            aria-label="Select language"
-            value={lang}
-            onChange={(e) => setLang(e.target.value)}
-          >
-            <option value="en">EN</option>
-            <option value="nl">NL</option>
-          </select>
-        </div>
-      </header>
-      <ConfigModal open={configIncomplete || showConfig} onClose={() => setShowConfig(false)} />
-      <main className="flex-1">
-        {!configIncomplete && <Dashboard />}
-      </main>
-      <FeedbackButton />
-    </div>
+    <>
+      {/* Ensure Tailwind JIT picks up custom classes */}
+      <div className="hidden bg-(--background) border-(--border) text-(--foreground)"></div>
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white">
+        <header className="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-700">
+          <div className="flex items-center gap-3">
+            <h1 className="text-2xl font-bold">{t('FortiManager Live Monitor')}</h1>
+            {configIncomplete && (
+              <span className="px-2 py-1 text-xs rounded bg-yellow-200 text-yellow-800 dark:bg-yellow-700 dark:text-yellow-100 animate-pulse">
+                {t('API config required')}
+              </span>
+            )}
+          </div>
+          <div className="flex gap-2 items-center">
+            <button
+              className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
+              onClick={() => setShowConfig(true)}
+            >
+              {t('API Config')}
+            </button>
+            <button
+              className="ml-2 px-3 py-2 rounded bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2"
+              aria-label="Toggle dark/light mode"
+              onClick={toggleTheme}
+            >
+              {theme === 'dark' ? '🌙 Dark' : '☀️ Light'}
+            </button>
+            <select
+              className="ml-2 px-2 py-1 rounded bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2"
+              aria-label="Select language"
+              value={lang}
+              onChange={(e) => setLang(e.target.value)}
+            >
+              <option value="en">EN</option>
+              <option value="nl">NL</option>
+            </select>
+          </div>
+        </header>
+        <ConfigModal open={configIncomplete || showConfig} onClose={() => setShowConfig(false)} />
+        <main className="flex-1">{!configIncomplete && <Dashboard />}</main>
+        <FeedbackButton />
+      </div>
+    </>
   );
 }
 

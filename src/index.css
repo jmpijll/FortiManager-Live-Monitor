@@ -1,3 +1,4 @@
+@config "../tailwind.config.js";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -55,7 +56,8 @@
     /* If a border is needed on all elements, use a valid Tailwind class or custom CSS here. */
   }
   body {
-    @apply bg-background text-foreground;
+    background-color: hsl(var(--background) / 1);
+    color: hsl(var(--foreground) / 1);
   }
 }
 
