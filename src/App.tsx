@@ -1,35 +1,28 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import ConfigModal from './components/ConfigModal';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [showConfig, setShowConfig] = useState(false);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white">
+      <header className="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-700">
+        <h1 className="text-2xl font-bold">FortiManager Live Monitor</h1>
+        <button
+          className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
+          onClick={() => setShowConfig(true)}
+        >
+          API Config
         </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+      </header>
+      <main className="p-4">
+        {/* Dashboard and features will go here */}
+        <p className="text-lg">Welcome! Configure your FortiManager API to get started.</p>
+      </main>
+      <ConfigModal open={showConfig} onClose={() => setShowConfig(false)} />
+    </div>
+  );
 }
 
-export default App
+export default App;
