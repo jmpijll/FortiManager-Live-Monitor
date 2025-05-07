@@ -175,3 +175,45 @@ We welcome all feedback, bug reports, and pull requests! See [CONTRIBUTING.md](C
 Ready to get started? **Clone, run, and enjoy a better FortiManager experience!**
 
 ---
+
+## FortiManager API Proxy (CORS/SSL Solution)
+
+### Why?
+
+Browsers enforce strict CORS and SSL rules, which can block direct API calls to FortiManager. To solve this, use the provided backend proxy server.
+
+### How to Use
+
+1. **Install dependencies:**
+   ```bash
+   npm install express node-fetch cors
+   ```
+2. **Run the proxy server:**
+
+   ```bash
+   node src/api/proxy-server.js
+   ```
+
+   The proxy will run on `http://localhost:4000` by default.
+
+3. **Configure the frontend:**
+   - Update your API calls to POST to `http://localhost:4000/api/fortimanager` with a JSON body:
+     ```json
+     {
+       "apiUrl": "https://manager.flowerbed.nl",
+       "apiToken": "<your-api-token>",
+       "body": { ...jsonrpc request... }
+     }
+     ```
+   - The proxy will forward the request to FortiManager and return the response.
+
+### Security Note
+
+- This proxy disables SSL verification for development. For production, use a valid certificate and remove the `NODE_TLS_REJECT_UNAUTHORIZED` line.
+
+### Why is this needed?
+
+- FortiManager does not send CORS headers, so browsers block direct requests.
+- This proxy allows your app to communicate securely and reliably with FortiManager.
+
+---
