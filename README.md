@@ -145,3 +145,44 @@ A modern web application for live monitoring and visualization of FortiManager c
     - A local module declaration (`src/types/react-table.d.ts`) to suppress missing type errors.
     - The `@typescript-eslint/no-explicit-any` linter rule is disabled for this file only, as recommended by [ESLint documentation](https://eslint.org/docs/latest/use/configure/rules) and [community best practices](https://medium.com/@karimdhrif4444/mastering-eslint-how-to-disable-rules-for-specific-files-06b976af6ee1).
   - These workarounds are isolated and documented in the code. Remove them once official type support is available.
+
+## Deployment
+
+This app is a static site and can be deployed to any static hosting provider. Here are common options:
+
+### Vercel
+
+- Import your repo at https://vercel.com/new
+- Set environment variables in the Vercel dashboard
+- Build command: `npm run build`
+- Output directory: `dist`
+
+### Netlify
+
+- Import your repo at https://app.netlify.com/start
+- Set environment variables in the Netlify dashboard
+- Build command: `npm run build`
+- Publish directory: `dist`
+
+### GitHub Pages
+
+- Build locally: `npm run build`
+- Push the contents of the `dist/` folder to the `gh-pages` branch (or use the GitHub Actions workflow below)
+- In your repo settings, set Pages source to `gh-pages` branch
+- **Automatic deployment:** This repo includes a GitHub Actions workflow (`.github/workflows/deploy.yml`) that will build and deploy the site to GitHub Pages on every push to `main`.
+
+### Environment Variables
+
+- Set your API URL and token as described in the Installation section
+- Never commit your `.env` file to version control
+
+## Branch Protection & PR Review
+
+- It is recommended to enable branch protection rules for `main`:
+  - Require pull request reviews before merging
+  - Require status checks to pass before merging (tests, lint, build)
+  - Require branches to be up to date before merging
+  - Optionally, enable code owners for critical files
+- See `.github/CODEOWNERS` and `.github/PULL_REQUEST_TEMPLATE.md` for examples (add these files as needed)
+
+---
