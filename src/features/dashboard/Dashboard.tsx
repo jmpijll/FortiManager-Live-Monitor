@@ -1,11 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense, lazy } from 'react';
 import Sidebar from './Sidebar';
 import DeviceTabs from './DeviceTabs';
-import DeviceTable from './DeviceTable';
+// import DeviceTable from './DeviceTable';
+// import DeviceStatusCharts from './DeviceStatusCharts';
 import SystemStatusCard from './SystemStatusCard';
 import ThresholdsModal from './ThresholdsModal';
-import DeviceStatusCharts from './DeviceStatusCharts';
+// import DeviceStatusCharts from './DeviceStatusCharts';
 import { useDevices, useFortiSwitches, useFortiAPs } from '../../hooks/useFortiManager';
+
+const DeviceTable = lazy(() => import('./DeviceTable'));
+const DeviceStatusCharts = lazy(() => import('./DeviceStatusCharts'));
 
 const DEFAULT_THRESHOLDS = { cpu: 80, mem: 80 };
 
@@ -76,10 +80,14 @@ export default function Dashboard() {
           thresholds={thresholds}
           setThresholds={setThresholds}
         />
-        <DeviceStatusCharts devices={allDevices} />
+        <Suspense fallback={<div>Loading charts...</div>}>
+          <DeviceStatusCharts devices={allDevices} />
+        </Suspense>
         <DeviceTabs selectedType={selectedType} onSelectType={setSelectedType} />
         {selectedAdom ? (
-          <DeviceTable adom={selectedAdom} deviceType={selectedType} thresholds={thresholds} />
+          <Suspense fallback={<div>Loading table...</div>}>
+            <DeviceTable adom={selectedAdom} deviceType={selectedType} thresholds={thresholds} />
+          </Suspense>
         ) : (
           <div className="text-gray-500">Select an ADOM to view devices.</div>
         )}

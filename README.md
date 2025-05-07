@@ -199,4 +199,19 @@ This app is a static site and can be deployed to any static hosting provider. He
   - Set appropriate CORS headers on your API.
   - Store secrets and tokens securely (never commit them to version control).
 
+## Performance Optimization
+
+- **Bundle Analysis:**
+  - After building (`npm run build`), open `stats.html` in your browser to analyze bundle size and composition.
+- **Code Splitting & Lazy Loading:**
+  - Main routes and heavy components should use React.lazy and Suspense for code splitting (see Vite and React docs).
+- **Lighthouse Audits:**
+  - Use Chrome DevTools Lighthouse to audit performance, accessibility, and best practices.
+  - Checklist:
+    - [ ] All images optimized
+    - [ ] No large JavaScript bundles
+    - [ ] Fast initial load (TTFB)
+    - [ ] Good accessibility score
+    - [ ] No blocking resources
+
 ---
