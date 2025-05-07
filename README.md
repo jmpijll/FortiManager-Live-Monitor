@@ -3,6 +3,7 @@
 A modern web application for live monitoring and visualization of FortiManager configurations and devices.
 
 ## Features
+
 - Beautiful, responsive UI/UX for real-time monitoring
 - Live updates at user-configurable intervals
 - Secure credential management via `.env` file
@@ -12,6 +13,7 @@ A modern web application for live monitoring and visualization of FortiManager c
 - Extensible for additional FortiManager monitoring needs
 
 ## Data Provided
+
 1. **All ADOMs**
 2. **Per ADOM:**
    - FortiGates
@@ -26,6 +28,7 @@ A modern web application for live monitoring and visualization of FortiManager c
    - Useful system and health metrics
 
 ## Tech Stack
+
 - **Frontend Framework:** React 18 with Vite
 - **Language:** TypeScript
 - **Styling:** Tailwind CSS with custom theme
@@ -35,33 +38,18 @@ A modern web application for live monitoring and visualization of FortiManager c
 - **HTTP Client:** Axios
 - **Date Handling:** date-fns
 
+## Code Quality & Contribution Workflow
+
+- **Linting:** Run `npm run lint` to check for code issues using ESLint.
+- **Formatting:** Run `npm run format` to auto-format code with Prettier.
+- **Pre-commit Hooks:** Husky and lint-staged ensure code is linted and formatted before every commit.
+- **How it works:**
+  - On `git commit`, Husky triggers lint-staged, which runs Prettier and ESLint on staged files.
+  - If any issues are found, the commit will be blocked until they are fixed.
+
 ## Development Setup
+
 1. Clone the repository:
-   ```bash
-   git clone https://github.com/jmpijll/FortiManager-Live-Monitor.git
-   cd FortiManager-Live-Monitor
    ```
 
-2. Install dependencies:
-   ```bash
-   npm install
    ```
-
-3. Create a `.env` file with your FortiManager API credentials (see `.env.example`)
-
-4. Start the development server:
-   ```bash
-   npm run dev
-   ```
-
-## Environment Variables
-Create a `.env` file in the root directory with the following variables:
-```
-VITE_FORTIMANAGER_HOST=https://your-fortimanager.example.com
-VITE_FORTIMANAGER_USERNAME=your-username
-VITE_FORTIMANAGER_PASSWORD=your-password
-VITE_POLL_INTERVAL_SECONDS=30
-```
-
-## Contributing
-Pull requests and suggestions welcome!
