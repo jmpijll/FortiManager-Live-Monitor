@@ -52,32 +52,60 @@ A modern web application for live monitoring and visualization of FortiManager c
   - On `git commit`, Husky triggers lint-staged, which runs Prettier and ESLint on staged files.
   - If any issues are found, the commit will be blocked until they are fixed.
 
-## Development Setup
+## Installation
 
-1. Clone the repository:
+### Prerequisites
 
+- [Node.js](https://nodejs.org/) (v18 or newer recommended)
+- [npm](https://www.npmjs.com/) (comes with Node.js)
+
+### Windows, macOS, Linux
+
+1. **Clone the repository:**
    ```sh
    git clone <repo-url>
    cd fortimanager-live-monitor
+   ```
+2. **Install dependencies:**
+   ```sh
    npm install
+   ```
+3. **Configure environment variables:**
+   - Copy `example.env` to `.env` and fill in your FortiManager API details:
+     ```sh
+     cp example.env .env
+     # Edit .env with your API URL and token
+     ```
+4. **Start the development server:**
+   ```sh
    npm run dev
    ```
+   The app will be available at [http://localhost:5173](http://localhost:5173) by default.
+
+## Production Build & Deployment
+
+1. **Build the app:**
+
+   ```sh
+   npm run build
+   ```
+
+   This creates a production-ready build in the `dist/` directory.
+
+2. **Preview the production build locally:**
+
+   ```sh
+   npm run preview
+   ```
+
+3. **Deploy:**
+   - Upload the contents of the `dist/` directory to your preferred static hosting provider (e.g., Vercel, Netlify, GitHub Pages, AWS S3, Nginx, Apache).
+   - Ensure your `.env` is configured correctly before building for production.
 
 ## Environment Variables
 
-Create a `.env` file in the root directory with the following variables:
-
-```
-VITE_FMG_API_URL=https://your-fortimanager.example.com
-VITE_FMG_API_TOKEN=your-api-token
-VITE_POLL_INTERVAL_SECONDS=30
-```
-
-## Security Notice: API Token Storage
-
-- The API token you provide is stored in your browser's localStorage for convenience and persistence between sessions.
-- **Do not use personal or highly privileged tokens in shared or untrusted environments.**
-- To clear your API token and config, open the API Config modal in the app and use the Reset button, or clear your browser's localStorage for this site.
+- See `example.env` for required variables. Copy it to `.env` and fill in your values.
+- **Never commit your `.env` file to version control.**
 
 ## Development Notes: TypeScript & Table Compatibility
 

@@ -22,6 +22,7 @@
 ```
 
 ## Main Components
+
 - **Login/Config Page:** For entering and saving FortiManager API credentials and polling interval
 - **Dashboard:**
   - ADOM overview
@@ -32,6 +33,7 @@
 - **Settings:** User preferences, thresholds, visualization options
 
 ## Development Steps
+
 1. **Initialize project** (Vite/Next.js, TypeScript, Tailwind/Material UI)
 2. **Set up folder structure**
 3. **Create .env and .env.example**
@@ -42,4 +44,4 @@
 8. **Add critical alert logic and visualizations**
 9. **Testing and QA**
 10. **Polish UI/UX**
-11. **Documentation and deployment** 
+11. **Documentation and deployment**

@@ -43,7 +43,7 @@ export default function Dashboard() {
       if (d.os_ver && d.os_ver !== '7.2.5') firmwareStatus = 'outdated';
       return { ...d, health, firmwareStatus };
     };
-     
+
     const all = [
       ...(devicesData.data || []).map(mapHealth),
       ...(switchesData.data || []).map(mapHealth),
