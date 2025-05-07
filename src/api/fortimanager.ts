@@ -41,6 +41,22 @@ export interface SystemStatus {
   cpu: number;
   mem: number;
 }
+export interface Switch {
+  name: string;
+  ip: string;
+  sn: string;
+  platform_str?: string;
+  os_ver?: string;
+  status?: string;
+}
+export interface AP {
+  name: string;
+  ip: string;
+  sn: string;
+  platform_str?: string;
+  os_ver?: string;
+  status?: string;
+}
 
 // API functions
 export async function getADOMs(): Promise<ADOM[]> {
@@ -75,6 +91,42 @@ export async function getSystemStatus(): Promise<SystemStatus> {
     id: 1,
     method: 'get',
     params: [{ url: '/sys/status' }],
+  });
+  return res.data.result?.[0]?.data || {};
+}
+
+export async function getFortiSwitches(adom: string): Promise<Switch[]> {
+  const res = await api.post('/jsonrpc', {
+    id: 1,
+    method: 'get',
+    params: [{ url: `/dvmdb/adom/${adom}/switch` }],
+  });
+  return res.data.result?.[0]?.data || [];
+}
+
+export async function getFortiAPs(adom: string): Promise<AP[]> {
+  const res = await api.post('/jsonrpc', {
+    id: 1,
+    method: 'get',
+    params: [{ url: `/dvmdb/adom/${adom}/ap` }],
+  });
+  return res.data.result?.[0]?.data || [];
+}
+
+export async function getSwitchMonitor(deviceName: string): Promise<DeviceMonitor> {
+  const res = await api.post('/jsonrpc', {
+    id: 1,
+    method: 'get',
+    params: [{ url: `/pm/switch/${deviceName}/monitor` }],
+  });
+  return res.data.result?.[0]?.data || {};
+}
+
+export async function getAPMonitor(deviceName: string): Promise<DeviceMonitor> {
+  const res = await api.post('/jsonrpc', {
+    id: 1,
+    method: 'get',
+    params: [{ url: `/pm/ap/${deviceName}/monitor` }],
   });
   return res.data.result?.[0]?.data || {};
 }
