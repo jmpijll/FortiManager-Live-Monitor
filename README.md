@@ -8,6 +8,8 @@ A modern web application for live monitoring and visualization of FortiManager c
 - Live updates at user-configurable intervals
 - Secure credential management via `.env` file
 - Filterable and customizable data views
+- **CSV export for device table data**
+- **Advanced filtering and column sorting**
 - Visualizations with critical alerts and predictions
 - Device and ADOM information, including firmware, HA status, and more
 - Extensible for additional FortiManager monitoring needs
@@ -24,6 +26,8 @@ A modern web application for live monitoring and visualization of FortiManager c
    - User-selectable visualizations and predictions
    - Critical alerts for abnormal values (user-defined thresholds)
    - Device info: firmware version, serial number, HA status, etc.
+   - **Export device table to CSV**
+   - **Advanced filtering and sorting in device table**
 4. **FortiManager Monitoring:**
    - Useful system and health metrics
 
@@ -37,6 +41,7 @@ A modern web application for live monitoring and visualization of FortiManager c
 - **UI Components:** Headless UI and Heroicons
 - **HTTP Client:** Axios
 - **Date Handling:** date-fns
+- **CSV Export:** file-saver
 
 ## Code Quality & Contribution Workflow
 
@@ -51,8 +56,11 @@ A modern web application for live monitoring and visualization of FortiManager c
 
 1. Clone the repository:
 
-   ```
-
+   ```sh
+   git clone <repo-url>
+   cd fortimanager-live-monitor
+   npm install
+   npm run dev
    ```
 
 ## Environment Variables
@@ -75,7 +83,7 @@ VITE_POLL_INTERVAL_SECONDS=30
 
 - **react-table & React 19:**
   - As of May 2025, `react-table` v7 does not provide up-to-date TypeScript types compatible with React 19.
-  - To enable advanced table features (filtering, search) with live updates, the following workarounds are used:
+  - To enable advanced table features (filtering, search, sorting) with live updates, the following workarounds are used:
     - Explicit `any` types for table rows/cells in `DeviceTable.tsx`.
     - A local module declaration (`src/types/react-table.d.ts`) to suppress missing type errors.
     - The `@typescript-eslint/no-explicit-any` linter rule is disabled for this file only, as recommended by [ESLint documentation](https://eslint.org/docs/latest/use/configure/rules) and [community best practices](https://medium.com/@karimdhrif4444/mastering-eslint-how-to-disable-rules-for-specific-files-06b976af6ee1).
