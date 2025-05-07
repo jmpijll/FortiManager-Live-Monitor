@@ -4,6 +4,7 @@ import { useConfig } from './context/ConfigContext';
 import Dashboard from './features/dashboard/Dashboard';
 import './App.css';
 import { useTranslation } from 'react-i18next';
+import FeedbackButton from './components/FeedbackButton';
 
 function App() {
   const [showConfig, setShowConfig] = useState(false);
@@ -73,6 +74,7 @@ function App() {
       <main className="flex-1">
         <Dashboard />
       </main>
+      <FeedbackButton />
     </div>
   );
 }

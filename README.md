@@ -214,4 +214,12 @@ This app is a static site and can be deployed to any static hosting provider. He
     - [ ] Good accessibility score
     - [ ] No blocking resources
 
+## User Feedback & Analytics
+
+- **Feedback:**
+  - Use the 💬 Feedback button (bottom right) to send feedback or report issues via GitHub.
+- **Analytics:**
+  - For privacy-respecting analytics, consider [Plausible](https://plausible.io/) or [Fathom](https://usefathom.com/).
+  - No analytics are enabled by default; add your preferred provider as needed.
+
 ---
