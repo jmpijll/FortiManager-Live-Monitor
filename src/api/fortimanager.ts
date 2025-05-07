@@ -11,7 +11,39 @@ const api = axios.create({
   },
 });
 
-export async function getADOMs() {
+// Types
+export interface ADOM {
+  name: string;
+  desc?: string;
+  os_ver?: string;
+}
+export interface Device {
+  name: string;
+  ip: string;
+  sn: string;
+  platform_str?: string;
+  ha_mode?: string;
+  os_ver?: string;
+  status?: string;
+}
+export interface DeviceMonitor {
+  cpu: number;
+  mem: number;
+  up_time: number;
+  version: string;
+  ha: string;
+  update: string;
+}
+export interface SystemStatus {
+  version: string;
+  hostname: string;
+  up_time: number;
+  cpu: number;
+  mem: number;
+}
+
+// API functions
+export async function getADOMs(): Promise<ADOM[]> {
   const res = await api.post('/jsonrpc', {
     id: 1,
     method: 'get',
@@ -20,7 +52,7 @@ export async function getADOMs() {
   return res.data.result?.[0]?.data || [];
 }
 
-export async function getDevices(adom: string) {
+export async function getDevices(adom: string): Promise<Device[]> {
   const res = await api.post('/jsonrpc', {
     id: 1,
     method: 'get',
@@ -29,34 +61,16 @@ export async function getDevices(adom: string) {
   return res.data.result?.[0]?.data || [];
 }
 
-export async function getFortiSwitches(adom: string) {
+export async function getDeviceMonitor(deviceName: string): Promise<DeviceMonitor> {
   const res = await api.post('/jsonrpc', {
     id: 1,
     method: 'get',
-    params: [{ url: `/dvmdb/adom/${adom}/switch` }],
-  });
-  return res.data.result?.[0]?.data || [];
-}
-
-export async function getFortiAPs(adom: string) {
-  const res = await api.post('/jsonrpc', {
-    id: 1,
-    method: 'get',
-    params: [{ url: `/dvmdb/adom/${adom}/fap` }],
-  });
-  return res.data.result?.[0]?.data || [];
-}
-
-export async function getDeviceMonitoring(adom: string, device: string) {
-  const res = await api.post('/jsonrpc', {
-    id: 1,
-    method: 'get',
-    params: [{ url: `/dvmdb/adom/${adom}/device/${device}` }],
+    params: [{ url: `/pm/device/${deviceName}/monitor` }],
   });
   return res.data.result?.[0]?.data || {};
 }
 
-export async function getSystemStatus() {
+export async function getSystemStatus(): Promise<SystemStatus> {
   const res = await api.post('/jsonrpc', {
     id: 1,
     method: 'get',
