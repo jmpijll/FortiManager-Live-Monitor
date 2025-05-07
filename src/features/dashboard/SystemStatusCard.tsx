@@ -20,10 +20,10 @@ export default function SystemStatusCard() {
   }
 
   return (
-    <div className="mb-6 p-4 rounded-lg shadow bg-blue-50 dark:bg-blue-900 flex flex-wrap gap-6 items-center">
+    <div className="mb-6 p-6 rounded-2xl shadow-lg bg-surface/90 dark:bg-surface/90 border border-border flex flex-wrap gap-8 items-center min-w-[320px] animate-fade-in">
       <div>
-        <div className="font-bold text-blue-900 dark:text-blue-100">FortiManager</div>
-        <div className="text-xs text-blue-700 dark:text-blue-200">{data.hostname}</div>
+        <div className="font-extrabold text-primary text-lg">FortiManager</div>
+        <div className="text-xs text-foreground/70">{data.hostname}</div>
       </div>
       <div>
         <span className="font-semibold">Version:</span> {data.version}
@@ -44,7 +44,7 @@ export default function SystemStatusCard() {
         >
           {data.cpu}%
           {cpuCritical && (
-            <span title="Critical CPU" className="ml-1">
+            <span title="Critical CPU" className="ml-1 animate-pulse">
               &#9888;
             </span>
           )}
@@ -63,7 +63,7 @@ export default function SystemStatusCard() {
         >
           {data.mem}%
           {memCritical && (
-            <span title="Critical Memory" className="ml-1">
+            <span title="Critical Memory" className="ml-1 animate-pulse">
               &#9888;
             </span>
           )}

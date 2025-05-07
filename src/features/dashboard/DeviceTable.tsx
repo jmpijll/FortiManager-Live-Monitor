@@ -124,23 +124,15 @@ export default function DeviceTable({ adom, deviceType, thresholds }: DeviceTabl
   const switchesData = useFortiSwitches(adom);
   const apsData = useFortiAPs(adom);
 
-  let devices, isLoading, error;
+  let devices;
   if (deviceType === 'fortigate') {
     devices = devicesData.data;
-    isLoading = devicesData.isLoading;
-    error = devicesData.error;
   } else if (deviceType === 'fortiswitch') {
     devices = switchesData.data;
-    isLoading = switchesData.isLoading;
-    error = switchesData.error;
   } else if (deviceType === 'fortiap') {
     devices = apsData.data;
-    isLoading = apsData.isLoading;
-    error = apsData.error;
   } else {
     devices = [];
-    isLoading = false;
-    error = false;
   }
   const [globalFilter, setGlobalFilter] = useState('');
   const [trendModal, setTrendModal] = useState<{ open: boolean; deviceName: string | null }>({
@@ -198,10 +190,7 @@ export default function DeviceTable({ adom, deviceType, thresholds }: DeviceTabl
   const data = useMemo(() => devices || [], [devices]);
 
   const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
+    /* getTableProps, getTableBodyProps, headerGroups, */ rows,
     prepareRow,
     setGlobalFilter: setTableGlobalFilter,
   } = useTable({ columns, data }, useFilters, useGlobalFilter, useSortBy);
@@ -213,64 +202,42 @@ export default function DeviceTable({ adom, deviceType, thresholds }: DeviceTabl
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded shadow p-4">
-      <h3 className="text-lg font-semibold mb-2">
-        {deviceType === 'fortigate'
-          ? 'FortiGate Devices'
-          : deviceType === 'fortiswitch'
-            ? 'FortiSwitch Devices'
-            : deviceType === 'fortiap'
-              ? 'FortiAP Devices'
-              : 'Devices'}
-      </h3>
-      <div className="flex items-center justify-between mb-3">
+    <div className="mt-8 bg-surface/90 dark:bg-surface/90 rounded-2xl shadow-lg border border-border p-6 animate-fade-in overflow-x-auto">
+      <div className="flex justify-between items-center mb-4">
         <input
-          className="px-2 py-1 border rounded w-full dark:bg-gray-900 dark:border-gray-700"
-          type="text"
-          placeholder="Search by name, IP, or serial..."
+          className="px-4 py-2 rounded-full border-2 border-input bg-surface-foreground/10 text-primary focus:border-primary focus:ring-2 focus:ring-primary outline-none transition-all w-64"
+          placeholder="Search devices..."
           value={globalFilter}
           onChange={handleSearch}
-          style={{ maxWidth: 300 }}
         />
         <button
-          className="ml-4 px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700"
-          onClick={() => exportToCSV(data as any[], columns)}
+          className="px-6 py-2 rounded-full bg-primary text-primary-foreground font-semibold shadow-md hover:bg-primary/90 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 transition-all duration-200 active:scale-95"
+          onClick={() => exportToCSV(data as any[], columns as any[])}
         >
           Export CSV
         </button>
       </div>
-      {isLoading && <div>Loading devices...</div>}
-      {error && <div className="text-red-500">Failed to load devices</div>}
-      <table {...getTableProps()} className="min-w-full text-sm">
+      <table className="min-w-full divide-y divide-border">
         <thead>
-          {headerGroups.map((headerGroup: Record<string, unknown>) => (
-            <tr
-              {...(headerGroup as any).getHeaderGroupProps()}
-              className="bg-gray-100 dark:bg-gray-700"
-            >
-              {(headerGroup as any).headers.map((column: Record<string, unknown>) => (
-                <th
-                  {...(column as any).getHeaderProps((column as any).getSortByToggleProps())}
-                  className="px-2 py-1 text-left cursor-pointer"
-                >
-                  {(column as any).render('Header')}
-                  {(column as any).isSorted ? ((column as any).isSortedDesc ? ' 🔽' : ' 🔼') : ''}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {rows.map((row: Record<string, unknown>) => {
-            (prepareRow as any)(row);
-            return (
-              <tr
-                {...(row as any).getRowProps()}
-                className="border-b border-gray-200 dark:border-gray-700"
+          <tr>
+            {columns.map((col) => (
+              <th
+                key={col.Header as string}
+                className="px-4 py-3 text-left text-xs font-bold text-primary uppercase tracking-wider bg-surface-foreground/5 border-b-2 border-border"
               >
-                {(row as any).cells.map((cell: Record<string, unknown>) => (
-                  <td {...(cell as any).getCellProps()} className="px-2 py-1">
-                    {(cell as any).render('Cell')}
+                {col.Header}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-border">
+          {rows.map((row: any) => {
+            prepareRow(row);
+            return (
+              <tr key={row.id} className="hover:bg-primary/5 transition-all">
+                {row.cells.map((cell: any) => (
+                  <td key={cell.column.id} className="px-4 py-3 text-foreground/90 text-sm">
+                    {cell.render('Cell')}
                   </td>
                 ))}
               </tr>
@@ -278,12 +245,14 @@ export default function DeviceTable({ adom, deviceType, thresholds }: DeviceTabl
           })}
         </tbody>
       </table>
-      <DeviceHealthTrendModal
-        deviceName={trendModal.deviceName || ''}
-        deviceType={deviceType}
-        open={trendModal.open}
-        onClose={() => setTrendModal({ open: false, deviceName: null })}
-      />
+      {trendModal.open && trendModal.deviceName && (
+        <DeviceHealthTrendModal
+          open={trendModal.open}
+          deviceName={trendModal.deviceName}
+          deviceType={deviceType}
+          onClose={() => setTrendModal({ open: false, deviceName: null })}
+        />
+      )}
     </div>
   );
 }

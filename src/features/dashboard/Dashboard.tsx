@@ -62,13 +62,13 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="flex h-[calc(100vh-64px)]">
+    <div className="flex h-[calc(100vh-64px)] bg-background text-foreground">
       <Sidebar selectedAdom={selectedAdom} onSelectAdom={setSelectedAdom} />
-      <main className="flex-1 p-6 overflow-auto">
-        <div className="flex justify-between items-center mb-2">
+      <main className="flex-1 p-8 overflow-auto bg-surface/80 dark:bg-surface/80 rounded-3xl shadow-2xl border border-border mx-6 my-8 animate-fade-in backdrop-blur-md">
+        <div className="flex justify-between items-center mb-6">
           <SystemStatusCard />
           <button
-            className="ml-4 px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
+            className="ml-4 px-6 py-3 rounded-full bg-primary text-primary-foreground font-bold shadow-lg hover:bg-primary/90 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 transition-all duration-200 active:scale-95"
             onClick={() => setShowThresholds(true)}
           >
             Thresholds
@@ -89,7 +89,7 @@ export default function Dashboard() {
             <DeviceTable adom={selectedAdom} deviceType={selectedType} thresholds={thresholds} />
           </Suspense>
         ) : (
-          <div className="text-gray-500">Select an ADOM to view devices.</div>
+          <div className="text-foreground/60 text-lg mt-8">Select an ADOM to view devices.</div>
         )}
       </main>
     </div>

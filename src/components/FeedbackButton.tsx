@@ -8,10 +8,13 @@ export default function FeedbackButton() {
       href={FEEDBACK_URL}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-4 right-4 px-4 py-2 rounded bg-blue-600 text-white shadow-lg hover:bg-blue-700 focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 z-50"
+      className="fixed bottom-6 right-6 px-6 py-3 rounded-full bg-primary text-primary-foreground shadow-xl hover:bg-primary/90 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 z-50 font-semibold text-lg flex items-center gap-2 transition-all duration-200 active:scale-95 animate-fade-in"
       aria-label="Send feedback or report an issue"
     >
-      💬 Feedback
+      <span role="img" aria-label="Feedback">
+        💬
+      </span>{' '}
+      Feedback
     </a>
   );
 }

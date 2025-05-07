@@ -25,3 +25,6 @@ dist-ssr
 
 .env
 example.env
+
+# Ignore the FortiManager API key testing script
+src/scripts/testFortiManagerCredentials.ts

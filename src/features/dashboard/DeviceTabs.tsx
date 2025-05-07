@@ -31,7 +31,7 @@ const DeviceTabs: React.FC<DeviceTabsProps> = ({ selectedType, onSelectType }) =
 
   return (
     <div
-      className="flex gap-2 my-4"
+      className="flex gap-4 my-8 justify-center"
       role="tablist"
       aria-label="Device type tabs"
       onKeyDown={handleKeyDown}
@@ -39,16 +39,20 @@ const DeviceTabs: React.FC<DeviceTabsProps> = ({ selectedType, onSelectType }) =
       {types.map((t, i) => (
         <button
           key={t.key}
-          ref={el => { tabRefs.current[i] = el; }}
+          ref={(el) => {
+            tabRefs.current[i] = el;
+          }}
           role="tab"
           aria-selected={selectedType === t.key}
           tabIndex={selectedType === t.key ? 0 : -1}
           aria-label={t.label}
-          className={`px-4 py-2 rounded outline-none transition-colors duration-150 border-2 ${
-            selectedType === t.key
-              ? 'bg-blue-600 text-white border-blue-600'
-              : 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 border-transparent'
-          } focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2`}
+          className={`px-6 py-2 rounded-full font-semibold text-lg outline-none transition-all duration-200 border-2 shadow-sm
+            ${
+              selectedType === t.key
+                ? 'bg-primary text-primary-foreground border-primary shadow-md scale-105'
+                : 'bg-surface-foreground/10 text-primary border-border hover:bg-primary/10'
+            }
+            focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2`}
           onClick={() => onSelectType(t.key)}
         >
           {t.label}
