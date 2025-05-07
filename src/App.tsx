@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import ConfigModal from './components/ConfigModal';
 import { useConfig } from './context/ConfigContext';
+import Dashboard from './features/dashboard/Dashboard';
 import './App.css';
 
 function App() {
@@ -26,11 +27,10 @@ function App() {
           API Config
         </button>
       </header>
-      <main className="p-4">
-        {/* Dashboard and features will go here */}
-        <p className="text-lg">Welcome! Configure your FortiManager API to get started.</p>
-      </main>
       <ConfigModal open={showConfig} onClose={() => setShowConfig(false)} />
+      <main className="flex-1">
+        <Dashboard />
+      </main>
     </div>
   );
 }
