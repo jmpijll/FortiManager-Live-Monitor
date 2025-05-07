@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ConfigModal from './components/ConfigModal';
 import { useConfig } from './context/ConfigContext';
 import Dashboard from './features/dashboard/Dashboard';
@@ -8,6 +8,22 @@ function App() {
   const [showConfig, setShowConfig] = useState(false);
   const { apiUrl, apiToken } = useConfig();
   const configIncomplete = !apiUrl || !apiToken;
+  const [theme, setTheme] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('theme') || 'dark';
+    }
+    return 'dark';
+  });
+
+  useEffect(() => {
+    document.documentElement.classList.remove('dark', 'light');
+    document.documentElement.classList.add(theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white">
@@ -20,12 +36,21 @@ function App() {
             </span>
           )}
         </div>
-        <button
-          className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
-          onClick={() => setShowConfig(true)}
-        >
-          API Config
-        </button>
+        <div className="flex gap-2 items-center">
+          <button
+            className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
+            onClick={() => setShowConfig(true)}
+          >
+            API Config
+          </button>
+          <button
+            className="ml-2 px-3 py-2 rounded bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2"
+            aria-label="Toggle dark/light mode"
+            onClick={toggleTheme}
+          >
+            {theme === 'dark' ? '🌙 Dark' : '☀️ Light'}
+          </button>
+        </div>
       </header>
       <ConfigModal open={showConfig} onClose={() => setShowConfig(false)} />
       <main className="flex-1">

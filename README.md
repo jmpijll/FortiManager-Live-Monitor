@@ -52,6 +52,35 @@ A modern web application for live monitoring and visualization of FortiManager c
   - On `git commit`, Husky triggers lint-staged, which runs Prettier and ESLint on staged files.
   - If any issues are found, the commit will be blocked until they are fixed.
 
+## Accessibility & UX
+
+- **Keyboard Navigation:** All main navigation and controls are accessible via keyboard (Tab, Arrow keys, Enter, Esc).
+- **ARIA Roles & Labels:** Key UI elements use ARIA roles and labels for screen reader support.
+- **Focus Indicators:** All interactive elements have visible focus indicators for accessibility.
+- **Color Contrast:** Designed for high contrast in both dark and light modes.
+- **Dark/Light Mode:**
+  - Dark mode is enabled by default.
+  - Toggle between dark and light mode using the button in the header. Preference is saved in your browser.
+
+## End-to-End (E2E) Testing
+
+- **Cypress** is set up for E2E tests.
+- To open the Cypress test runner:
+  ```sh
+  npm run cypress:open
+  ```
+- To run Cypress tests headlessly:
+  ```sh
+  npm run cypress:run
+  ```
+- Example E2E test is in `cypress/e2e/first.cy.js`.
+
+## Contribution & Code Quality
+
+- See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on contributing, commit conventions, and code review.
+- Pre-commit hooks (Husky, lint-staged) ensure code is linted and formatted before every commit.
+- Accessibility, testing, and code quality are core project priorities.
+
 ## Installation
 
 ### Prerequisites

@@ -12,9 +12,9 @@ interface ConfigContextType extends Config {
 }
 
 const defaultConfig: Config = {
-  apiUrl: import.meta.env.VITE_FMG_API_URL || '',
-  apiToken: import.meta.env.VITE_FMG_API_TOKEN || '',
-  pollInterval: Number(import.meta.env.VITE_POLL_INTERVAL_SECONDS) || 30,
+  apiUrl: process.env.VITE_FMG_API_URL || '',
+  apiToken: process.env.VITE_FMG_API_TOKEN || '',
+  pollInterval: Number(process.env.VITE_POLL_INTERVAL_SECONDS) || 30,
 };
 
 const ConfigContext = createContext<ConfigContextType | undefined>(undefined);

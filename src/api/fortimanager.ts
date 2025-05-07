@@ -1,7 +1,5 @@
 import axios from 'axios';
-
-const FMG_API_URL = import.meta.env.VITE_FMG_API_URL;
-const FMG_API_TOKEN = import.meta.env.VITE_FMG_API_TOKEN;
+import { FMG_API_URL, FMG_API_TOKEN } from '../env';
 
 const api = axios.create({
   baseURL: FMG_API_URL,
