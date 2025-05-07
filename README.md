@@ -1,239 +1,175 @@
-# FortiManager Live Monitor
+# 🚀 FortiManager Live Monitor
 
-A modern web application for live monitoring and visualization of FortiManager configurations and devices.
+Welcome to **FortiManager Live Monitor** – your modern, user-friendly dashboard for real-time monitoring and visualization of Fortinet FortiManager devices and configurations. Whether you're a Fortinet pro or just getting started, this app makes it easy to connect, explore, and stay on top of your network health!
 
-## Features
+---
 
-- Beautiful, responsive UI/UX for real-time monitoring
-- Live updates at user-configurable intervals
-- Secure credential management via `.env` file
-- Filterable and customizable data views
-- **CSV export for device table data**
-- **Advanced filtering and column sorting**
-- Visualizations with critical alerts and predictions
-- Device and ADOM information, including firmware, HA status, and more
-- Extensible for additional FortiManager monitoring needs
+## 🌟 Features at a Glance
 
-## Data Provided
+- **No setup headaches:** Just enter your FortiManager URL, username, and password – you're in!
+- **Live device monitoring:** See all your ADOMs, FortiGates, FortiSwitches, and FortiAPs in one place.
+- **Beautiful, responsive UI:** Works great on desktop and mobile.
+- **Critical alerts & trends:** Instantly spot issues with visual health indicators and charts.
+- **Secure by design:** Credentials are never stored; sessions are managed safely.
+- **Dark/light mode:** Your eyes, your choice.
+- **Multi-language ready:** English and Dutch included – more coming soon!
+- **Feedback built-in:** Found a bug or have an idea? Click the 💬 button!
 
-1. **All ADOMs**
-2. **Per ADOM:**
-   - FortiGates
-   - FortiSwitches
-   - FortiAPs
-3. **Per Device:**
-   - Infrastructure monitoring (CPU, memory, updates, etc.)
-   - User-selectable visualizations and predictions
-   - Critical alerts for abnormal values (user-defined thresholds)
-   - Device info: firmware version, serial number, HA status, etc.
-   - **Export device table to CSV**
-   - **Advanced filtering and sorting in device table**
-4. **FortiManager Monitoring:**
-   - Useful system and health metrics
+---
 
-## Tech Stack
+## 🚦 Quick Start
 
-- **Frontend Framework:** React 18 with Vite
-- **Language:** TypeScript
-- **Styling:** Tailwind CSS with custom theme
-- **State Management:** React Query for server state
-- **Data Visualization:** Chart.js with react-chartjs-2
-- **UI Components:** Headless UI and Heroicons
-- **HTTP Client:** Axios
-- **Date Handling:** date-fns
-- **CSV Export:** file-saver
-
-## Code Quality & Contribution Workflow
-
-- **Linting:** Run `npm run lint` to check for code issues using ESLint.
-- **Formatting:** Run `npm run format` to auto-format code with Prettier.
-- **Pre-commit Hooks:** Husky and lint-staged ensure code is linted and formatted before every commit.
-- **How it works:**
-  - On `git commit`, Husky triggers lint-staged, which runs Prettier and ESLint on staged files.
-  - If any issues are found, the commit will be blocked until they are fixed.
-
-## Accessibility & UX
-
-- **Keyboard Navigation:** All main navigation and controls are accessible via keyboard (Tab, Arrow keys, Enter, Esc).
-- **ARIA Roles & Labels:** Key UI elements use ARIA roles and labels for screen reader support.
-- **Focus Indicators:** All interactive elements have visible focus indicators for accessibility.
-- **Color Contrast:** Designed for high contrast in both dark and light modes.
-- **Dark/Light Mode:**
-  - Dark mode is enabled by default.
-  - Toggle between dark and light mode using the button in the header. Preference is saved in your browser.
-
-## End-to-End (E2E) Testing
-
-- **Cypress** is set up for E2E tests.
-- To open the Cypress test runner:
-  ```sh
-  npm run cypress:open
-  ```
-- To run Cypress tests headlessly:
-  ```sh
-  npm run cypress:run
-  ```
-- Example E2E test is in `cypress/e2e/first.cy.js`.
-
-## Contribution & Code Quality
-
-- See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on contributing, commit conventions, and code review.
-- Pre-commit hooks (Husky, lint-staged) ensure code is linted and formatted before every commit.
-- Accessibility, testing, and code quality are core project priorities.
-
-## Installation
-
-### Prerequisites
-
-- [Node.js](https://nodejs.org/) (v18 or newer recommended)
-- [npm](https://www.npmjs.com/) (comes with Node.js)
-
-### Windows, macOS, Linux
-
-1. **Clone the repository:**
+1. **Clone & Install**
    ```sh
    git clone <repo-url>
    cd fortimanager-live-monitor
-   ```
-2. **Install dependencies:**
-   ```sh
    npm install
    ```
-3. **Configure environment variables:**
-   - Copy `example.env` to `.env` and fill in your FortiManager API details:
-     ```sh
-     cp example.env .env
-     # Edit .env with your API URL and token
-     ```
-4. **Start the development server:**
+2. **Run the App**
    ```sh
    npm run dev
    ```
-   The app will be available at [http://localhost:5173](http://localhost:5173) by default.
+   Open [http://localhost:5173](http://localhost:5173) in your browser.
+3. **Login**
+   - Enter your FortiManager **API URL** (e.g., `https://your-fmg.example.com`)
+   - Enter your **username** and **password**
+   - Click **Login** – that's it!
 
-## Production Build & Deployment
+> **Note:** No need to edit `.env` files or restart the app for different FortiManager instances. Just log out and log in with new credentials anytime.
 
-1. **Build the app:**
+---
 
-   ```sh
-   npm run build
-   ```
+## 🔒 How Authentication Works
 
-   This creates a production-ready build in the `dist/` directory.
+- **Session-based login:**
+  - Your credentials are sent securely to FortiManager's `/sys/login/user` endpoint.
+  - The app receives a session ID and uses it for all API requests.
+  - **Your password is never stored** – not in localStorage, not in cookies, nowhere.
+- **Session expiry:**
+  - If your session expires, you'll be prompted to log in again.
+- **Logout:**
+  - Click the settings icon to log out and clear your session.
 
-2. **Preview the production build locally:**
+---
 
-   ```sh
-   npm run preview
-   ```
+## 🖥️ What You'll See
 
-3. **Deploy:**
-   - Upload the contents of the `dist/` directory to your preferred static hosting provider (e.g., Vercel, Netlify, GitHub Pages, AWS S3, Nginx, Apache).
-   - Ensure your `.env` is configured correctly before building for production.
-
-## Environment Variables
-
-- See `example.env` for required variables. Copy it to `.env` and fill in your values.
-- **Never commit your `.env` file to version control.**
-
-## Development Notes: TypeScript & Table Compatibility
-
-- **react-table & React 19:**
-  - As of May 2025, `react-table` v7 does not provide up-to-date TypeScript types compatible with React 19.
-  - To enable advanced table features (filtering, search, sorting) with live updates, the following workarounds are used:
-    - Explicit `any` types for table rows/cells in `DeviceTable.tsx`.
-    - A local module declaration (`src/types/react-table.d.ts`) to suppress missing type errors.
-    - The `@typescript-eslint/no-explicit-any` linter rule is disabled for this file only, as recommended by [ESLint documentation](https://eslint.org/docs/latest/use/configure/rules) and [community best practices](https://medium.com/@karimdhrif4444/mastering-eslint-how-to-disable-rules-for-specific-files-06b976af6ee1).
-  - These workarounds are isolated and documented in the code. Remove them once official type support is available.
-
-## Deployment
-
-This app is a static site and can be deployed to any static hosting provider. Here are common options:
-
-### Vercel
-
-- Import your repo at https://vercel.com/new
-- Set environment variables in the Vercel dashboard
-- Build command: `npm run build`
-- Output directory: `dist`
-
-### Netlify
-
-- Import your repo at https://app.netlify.com/start
-- Set environment variables in the Netlify dashboard
-- Build command: `npm run build`
-- Publish directory: `dist`
-
-### GitHub Pages
-
-- Build locally: `npm run build`
-- Push the contents of the `dist/` folder to the `gh-pages` branch (or use the GitHub Actions workflow below)
-- In your repo settings, set Pages source to `gh-pages` branch
-- **Automatic deployment:** This repo includes a GitHub Actions workflow (`.github/workflows/deploy.yml`) that will build and deploy the site to GitHub Pages on every push to `main`.
-
-### Environment Variables
-
-- Set your API URL and token as described in the Installation section
-- Never commit your `.env` file to version control
-
-## Branch Protection & PR Review
-
-- It is recommended to enable branch protection rules for `main`:
-  - Require pull request reviews before merging
-  - Require status checks to pass before merging (tests, lint, build)
-  - Require branches to be up to date before merging
-  - Optionally, enable code owners for critical files
-- See `.github/CODEOWNERS` and `.github/PULL_REQUEST_TEMPLATE.md` for examples (add these files as needed)
-
-## Security: XSS & CSRF Protection
-
-- **XSS Protection:**
-  - React escapes all values interpolated in JSX by default, protecting against XSS attacks.
-  - Avoid using `dangerouslySetInnerHTML` unless absolutely necessary and always sanitize input if you do.
-  - Never trust or render raw user-generated HTML.
-- **CSRF Protection:**
-  - This app does not use cookies for authentication, so CSRF risk is minimized.
-  - If you add cookie-based auth or forms, use CSRF tokens and same-site cookie settings.
-- **Deployment Security Tips:**
-  - Always use HTTPS in production.
-  - Set appropriate CORS headers on your API.
-  - Store secrets and tokens securely (never commit them to version control).
-
-## Performance Optimization
-
-- **Bundle Analysis:**
-  - After building (`npm run build`), open `stats.html` in your browser to analyze bundle size and composition.
-- **Code Splitting & Lazy Loading:**
-  - Main routes and heavy components should use React.lazy and Suspense for code splitting (see Vite and React docs).
-- **Lighthouse Audits:**
-  - Use Chrome DevTools Lighthouse to audit performance, accessibility, and best practices.
-  - Checklist:
-    - [ ] All images optimized
-    - [ ] No large JavaScript bundles
-    - [ ] Fast initial load (TTFB)
-    - [ ] Good accessibility score
-    - [ ] No blocking resources
-
-## User Feedback & Analytics
-
+- **Dashboard:**
+  - Overview of all ADOMs and devices
+  - Device health, firmware status, and trends
+  - Critical alerts for CPU/memory issues
+- **Device Details:**
+  - Drill down into FortiGate, FortiSwitch, and FortiAP stats
+  - Export device tables to CSV
+- **Settings:**
+  - Change thresholds, language, or theme (dark/light)
 - **Feedback:**
-  - Use the 💬 Feedback button (bottom right) to send feedback or report issues via GitHub.
-- **Analytics:**
-  - For privacy-respecting analytics, consider [Plausible](https://plausible.io/) or [Fathom](https://usefathom.com/).
-  - No analytics are enabled by default; add your preferred provider as needed.
+  - Click the 💬 button (bottom right) to send feedback or report issues
 
-## Feature Roadmap
+---
 
-- **Role-based Access:** Planned for future release. Will allow different user roles and permissions.
-- **Advanced Reporting:** Planned for future release. Will include exportable reports and custom dashboards.
-- **Mobile Support:** Planned for future release. Responsive design is in place, but dedicated mobile features are on the roadmap.
+## 🛡️ Security & Privacy
 
-## Ongoing Maintenance & Documentation Review
+- **No credentials stored:** Only the session ID is kept (and cleared on logout).
+- **HTTPS required:** Always use your FortiManager's HTTPS URL.
+- **Open source:** Review or contribute to the code anytime!
 
-- **Dependency Updates:**
-  - Use tools like [Dependabot](https://github.com/dependabot) or [Renovate](https://github.com/renovatebot/renovate) to keep dependencies up to date.
-- **Documentation Review:**
-  - Review and update documentation at least once per quarter or after major changes.
-  - Use the checklists in this README and CONTRIBUTING.md to ensure best practices are followed.
+---
+
+## 🛠️ Tech Stack (Don't worry, it's friendly!)
+
+- **Frontend:** React 18, TypeScript, Vite, Tailwind CSS
+- **State:** React Query, Context API
+- **Testing:** Jest, Cypress (E2E)
+- **i18n:** react-i18next
+- **CI/CD:** GitHub Actions
+
+> **New to these tools?** No problem! The codebase is clean, well-documented, and easy to extend.
+
+---
+
+## 📦 Deployment
+
+- **Static hosting:** Deploy to Vercel, Netlify, or GitHub Pages in minutes.
+- **No backend needed:** All API calls go directly from your browser to your FortiManager.
+- **See the Deployment section below for details.**
+
+---
+
+## ❓ FAQ
+
+**Q: What do I need to connect?**
+
+- Your FortiManager's API URL, a valid username, and password.
+
+**Q: Is my password safe?**
+
+- Yes! It's only used for the login request and never stored.
+
+**Q: Can I use this on mobile?**
+
+- Absolutely! The UI is fully responsive.
+
+**Q: What if my session expires?**
+
+- You'll be prompted to log in again. No need to refresh or restart.
+
+**Q: How do I change language or theme?**
+
+- Use the dropdowns in the header.
+
+**Q: How do I give feedback?**
+
+- Click the 💬 button in the bottom right corner!
+
+---
+
+## 🧑‍💻 For Developers
+
+- **Code quality:** ESLint, Prettier, Husky, lint-staged
+- **Testing:**
+  - `npm test` for unit tests
+  - `npm run cypress:open` for E2E
+- **Bundle analysis:** After `npm run build`, open `stats.html`
+- **Contribution:** See [CONTRIBUTING.md](CONTRIBUTING.md)
+
+---
+
+## 🚀 Deployment
+
+- **Vercel:** Import your repo, set build command to `npm run build`, output to `dist`
+- **Netlify:** Same as above
+- **GitHub Pages:** Use the included GitHub Actions workflow for auto-deploy
+- **Environment:** No secrets or tokens needed in `.env` – all handled at runtime
+
+---
+
+## 🛠️ Troubleshooting
+
+- **Login fails?**
+  - Double-check your API URL, username, and password
+  - Make sure your FortiManager allows API access from your IP
+  - Check browser console for error details
+- **Dashboard not loading?**
+  - Ensure you're logged in and session is valid
+  - Try logging out and back in
+- **Still stuck?**
+  - Click the 💬 button or open a GitHub issue
+
+---
+
+## 🌍 About Fortinet & FortiManager
+
+**Fortinet** is a global leader in cybersecurity solutions. **FortiManager** is their centralized management platform for FortiGate, FortiSwitch, and FortiAP devices. This app is an open-source, community-driven tool to make FortiManager monitoring easier and more accessible for everyone.
+
+---
+
+## ❤️ Contributing
+
+We welcome all feedback, bug reports, and pull requests! See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+
+---
+
+Ready to get started? **Clone, run, and enjoy a better FortiManager experience!**
 
 ---
