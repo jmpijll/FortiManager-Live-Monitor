@@ -185,4 +185,18 @@ This app is a static site and can be deployed to any static hosting provider. He
   - Optionally, enable code owners for critical files
 - See `.github/CODEOWNERS` and `.github/PULL_REQUEST_TEMPLATE.md` for examples (add these files as needed)
 
+## Security: XSS & CSRF Protection
+
+- **XSS Protection:**
+  - React escapes all values interpolated in JSX by default, protecting against XSS attacks.
+  - Avoid using `dangerouslySetInnerHTML` unless absolutely necessary and always sanitize input if you do.
+  - Never trust or render raw user-generated HTML.
+- **CSRF Protection:**
+  - This app does not use cookies for authentication, so CSRF risk is minimized.
+  - If you add cookie-based auth or forms, use CSRF tokens and same-site cookie settings.
+- **Deployment Security Tips:**
+  - Always use HTTPS in production.
+  - Set appropriate CORS headers on your API.
+  - Store secrets and tokens securely (never commit them to version control).
+
 ---
